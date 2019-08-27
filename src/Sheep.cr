@@ -1,11 +1,14 @@
-# Sheep who become people and are messy
-# But are they messy because of cleanliness?
-# Or do they die in a mess?
-# For lamb chops
+# Sheep class
+# sheep have names, ages, genders (multiple to avoid modern arguements),
+# a lifegoal and a lifeline
+# Lifelines are mottos to live by
 
 class Sheep
-  property lifegoal
-  property lifeline
+  property lifegoal : String
+  property lifeline : String
+  property idiot : Bool
+  property friend : Sheep
+  property is_friend : Bool
   getter name : String
   getter age : Int32
   getter gender : String
@@ -13,6 +16,9 @@ class Sheep
   def initialize(@name, @age, @gender)
     @lifegoal = ""
     @lifeline = ""
+    @idiot = false
+    @friend = nil
+    @is_friend = false
   end
 
   def inform
@@ -24,12 +30,6 @@ class Sheep
   end
 
   def assign_line(possiblelines)
-  	@lifeline = possiblelines[Random.rand(possiblelines.size)]
+    @lifeline = possiblelines[Random.rand(possiblelines.size)]
   end
 end
-
-jeff = Sheep.new "Jeff", 6, "male"
-jeff.inform
-possiblegoals = ["Get a pet dog", "Have some cheese", "Shoe the Donkey"]
-jeff.assign_goal(possiblegoals)
-puts "#{jeff.lifegoal}"
