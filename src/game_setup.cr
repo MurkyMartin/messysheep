@@ -27,15 +27,23 @@ def create
   option_name = false
   option_goal = false
   option_line = false
+  final_num_sheep : Int32
+  final_num_sheep = 0
 
   until all_options_done.size == num_options
     if !option_num_sheep
-      puts "Choose number of sheep (default is #{default_num_sheep}:"
+      puts "Choose number of sheep (default is #{default_num_sheep}):"
       input_sheep_num = gets
       begin
-        if input_sheep_num
-          input_sheep_num = input_sheep_num.chomp.to_i
-          puts "You chose #{input_sheep_num} sheep."
+        if !input_sheep_num.nil?
+          input_sheep_num = input_sheep_num.chomp
+          if input_sheep_num.to_i?
+            puts "You chose #{input_sheep_num} sheep."
+            final_num_sheep = input_sheep_num.to_i.not_nil!
+          else
+            puts "'#{input_sheep_num}' is not a number - try again"
+            next
+          end
           option_num_sheep = true
           all_options_done.push(1)
         end
@@ -45,19 +53,19 @@ def create
     end
     if !option_name
       input_names = [] of String
-      input_names = input_loops(input_sheep_num, "name")
+      input_names = input_loops(final_num_sheep, "name")
       option_name = true
       all_options_done.push(2)
     end
     if !option_goal
       input_goals = [] of String
-      input_goals = input_loops(input_sheep_num, "goal")
+      input_goals = input_loops(final_num_sheep, "goal")
       option_goal = true
       all_options_done.push(3)
     end
     if !option_line
       input_lines = [] of String
-      input_lines = input_loops(input_sheep_num, "line")
+      input_lines = input_loops(final_num_sheep, "line")
       option_line = true
       all_options_done.push(4)
     end
@@ -65,8 +73,8 @@ def create
   puts "You chose the following:\n
         -#{input_sheep_num} number of sheep\n
         -#{input_names} names\n
-        -#{input_goals}\n
-        -#{input_lines}\n"
+        -#{input_goals} goals\n
+        -#{input_lines} lines\n"
 end
 
 def input_loops(num_sheep : Int32, input_type : String)
@@ -94,14 +102,13 @@ def input_loops(num_sheep : Int32, input_type : String)
   puts "#{message}"
   while sheep < num_sheep
     next_name = gets
-    if next_name
+    if next_name && next_name.size > 0
       output_list.push(next_name)
       sheep += 1
     else
-      next "Detected nil - try again"
+      puts "Detected nil or empty - try again"
+      next
     end
   end
   return output_list
 end
-
-create()
