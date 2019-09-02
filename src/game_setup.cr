@@ -6,6 +6,7 @@ require "./Sheep"
 
 def create
   num_options = 4
+  sheep_list = [] of Sheep
 
   # first, specify the defaults
 
@@ -29,6 +30,10 @@ def create
   option_line = false
   final_num_sheep : Int32
   final_num_sheep = 0
+
+  final_names = [] of String
+  final_goals = [] of String
+  final_lines = [] of String
 
   until all_options_done.size == num_options
     if !option_num_sheep
@@ -75,6 +80,27 @@ def create
         -#{input_names} names\n
         -#{input_goals} goals\n
         -#{input_lines} lines\n"
+
+  #  input_names.each do |check_name|
+  #   if !check_name.nil?
+  #      final_names.push(check_name)
+  #    end
+  #  end
+
+  input_names.size.times do |i|
+    if !input_names[i].nil?
+      final_names.push(input_names[i])
+    end
+  end
+
+  all_options_done.each do |cheese|
+    puts "#{cheese}"
+    sheep_list.push(Sheep.new(final_names[Random.rand(final_names.size)], Random.rand(20), "Something"))
+  end
+
+  sheep_list.each do |shep|
+    shep.inform
+  end
 end
 
 def input_loops(num_sheep : Int32, input_type : String)
@@ -112,3 +138,5 @@ def input_loops(num_sheep : Int32, input_type : String)
   end
   return output_list
 end
+
+create()
